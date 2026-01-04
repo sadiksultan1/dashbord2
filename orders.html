@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .orders-hero {
+            margin-top: 70px;
+            padding: 80px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .orders-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .orders-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+            min-height: 60vh;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #FFD700;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .order-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-processing {
+            background: #cce7ff;
+            color: #004085;
+        }
+
+        .order-items {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .empty-orders {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-orders i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .orders-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .order-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .order-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="orders.html" class="active">My Orders</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Orders Hero -->
+    <section class="orders-hero">
+        <div class="container">
+            <h1>📋 My Orders</h1>
+            <p>Track your purchases and access your courses</p>
+        </div>
+    </section>
+
+    <!-- Orders Content -->
+    <section class="orders-section">
+        <div class="container">
+            <div id="orders-container">
+                <!-- Orders will be rendered here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Include common elements -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="orders.html">My Orders</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Order Support</a></li>
+                        <li><a href="contact.html">Returns</a></li>
+                        <li><a href="contact.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Orders page functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrders();
+        });
+
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            const orders = window.cartManager ? window.cartManager.getOrderHistory() : [];
+
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-receipt"></i>
+                        <h3>No orders yet</h3>
+                        <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+                        <a href="lessons.html" class="cta-btn">Browse Courses</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const ordersHTML = orders.reverse().map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-number">📋 Order #${order.orderNumber}</div>
+                        <div class="order-status status-${order.status}">
+                            ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        </div>
+                    </div>
+                    
+                    <div class="order-meta">
+                        <p><strong>📅 Date:</strong> ${new Date(order.timestamp).toLocaleDateString()}</p>
+                        <p><strong>💳 Payment:</strong> ${getPaymentMethodName(order.paymentMethod)}</p>
+                        ${order.promoCode ? `<p><strong>🎟️ Promo Code:</strong> ${order.promoCode}</p>` : ''}
+                    </div>
+                    
+                    <div class="order-items">
+                        <h4>📚 Items:</h4>
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <div>
+                                    <strong>${item.name}</strong>
+                                    <span style="color: #666;"> × ${item.quantity}</span>
+                                </div>
+                                <div>$${(item.price * item.quantity).toFixed(2)}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="order-summary">
+                        ${order.discount > 0 ? `<p>💰 Discount: -$${order.discount.toFixed(2)}</p>` : ''}
+                        <p>📊 Tax: $${order.tax.toFixed(2)}</p>
+                        <div class="order-total">💵 Total: $${order.total.toFixed(2)}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = ordersHTML;
+        }
+
+        function getPaymentMethodName(method) {
+            const names = {
+                paypal: 'PayPal',
+                bank: 'Bank Transfer',
+                vodafone: 'Vodafone Cash',
+                cash: 'Cash Payment'
+            };
+            return names[method] || method;
+        }
+    </script>
+</body>
+</html>

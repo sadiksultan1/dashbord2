@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARG STAR - Advanced AI Education</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="library.html">Book Library</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight">TARG STAR</span></h1>
+            <p>Master the Future with Advanced AI Education</p>
+            <div class="hero-buttons">
+                <button class="cta-btn">Start Learning</button>
+                <button id="ai-chat-btn" class="ai-chat-btn">
+                    <i class="fas fa-robot"></i> AI Assistant
+                </button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-star">
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                    <polygon points="100,10 120,70 190,70 140,110 160,170 100,130 40,170 60,110 10,70 80,70" fill="#FFD700" stroke="#FFA500" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search courses, lessons, or topics...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose TARG STAR?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>Advanced AI Curriculum</h3>
+                    <p>Comprehensive courses covering machine learning, deep learning, and AI ethics.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Expert Instructors</h3>
+                    <p>Learn from industry professionals and AI researchers.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-certificate"></i>
+                    <h3>Certification</h3>
+                    <p>Earn recognized certificates upon course completion.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Hands-on Projects</h3>
+                    <p>Build real-world AI applications and portfolios.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses -->
+    <section class="popular-courses">
+        <div class="container">
+            <h2>Popular AI Courses</h2>
+            <div class="courses-grid">
+                <div class="course-card" data-course="machine-learning">
+                    <img src="images/ml-course.jpg" alt="Machine Learning" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk1hY2hpbmUgTGVhcm5pbmc8L3RleHQ+PC9zdmc+'">
+                    <div class="course-info">
+                        <h3>Machine Learning Fundamentals</h3>
+                        <p>Learn the basics of ML algorithms and applications.</p>
+                        <div class="course-price">$99</div>
+                        <button class="add-to-cart" data-item="Machine Learning Course" data-price="99">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="course-card" data-course="deep-learning">
+                    <img src="images/dl-course.jpg" alt="Deep Learning" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkRlZXAgTGVhcm5pbmc8L3RleHQ+PC9zdmc+'">
+                    <div class="course-info">
+                        <h3>Deep Learning Mastery</h3>
+                        <p>Advanced neural networks and deep learning techniques.</p>
+                        <div class="course-price">$149</div>
+                        <button class="add-to-cart" data-item="Deep Learning Course" data-price="149">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="course-card" data-course="nlp">
+                    <img src="images/nlp-course.jpg" alt="NLP" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5MUCBDT1VSU0U8L3RleHQ+PC9zdmc+'">
+                    <div class="course-info">
+                        <h3>Natural Language Processing</h3>
+                        <p>Build AI systems that understand human language.</p>
+                        <div class="course-price">$129</div>
+                        <button class="add-to-cart" data-item="NLP Course" data-price="129">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals through comprehensive education and hands-on experience.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="settings.html">Settings</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="lesson-ml.html">Machine Learning</a></li>
+                        <li><a href="lesson-dl.html">Deep Learning</a></li>
+                        <li><a href="lesson-nlp.html">NLP</a></li>
+                        <li><a href="lesson-cv.html">Computer Vision</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                    <div class="footer-settings">
+                        <a href="settings.html" class="settings-icon-link" title="Settings & Preferences">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </div>
+                    <div class="social-media-section">
+                        <h3>Follow Us</h3>
+                        <p>Stay connected with TARG STAR</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook" title="Follow us on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="#" class="social-link telegram" title="Join our Telegram">
+                                <i class="fab fa-telegram-plane"></i>
+                                <span>Telegram</span>
+                            </a>
+                            <a href="#" class="social-link instagram" title="Follow us on Instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#" class="social-link twitter" title="Follow us on Twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="#" class="social-link linkedin" title="Connect on LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="#" class="social-link youtube" title="Subscribe to our YouTube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modals -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In to TARG STAR</h2>
+                <div class="auth-message" id="signin-message"></div>
+                
+                <!-- Google Sign-In Button -->
+                <button type="button" class="google-auth-btn" onclick="window.authManager?.handleGoogleSignIn()">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In with Email</button>
+                </form>
+                
+                <div class="auth-links">
+                    <a href="#" onclick="window.authManager?.showForgotPassword()">Forgot Password?</a>
+                </div>
+                
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Join TARG STAR</h2>
+                <div class="auth-message" id="signup-message"></div>
+                
+                <!-- Google Sign-Up Button -->
+                <button type="button" class="google-auth-btn" onclick="window.authManager?.handleGoogleSignUp()">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign up with Google
+                </button>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password (min. 6 characters)" required>
+                    <button type="submit">Create Account</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Modal -->
+    <div id="chat-modal" class="modal">
+        <div class="modal-content chat-modal-content">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        Hello! I'm your AI learning assistant. How can I help you with your AI education today?
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input-field" placeholder="Ask me anything about AI...">
+                <button id="send-message"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Floating Chat Button -->
+    <button id="floating-chat-btn" class="floating-chat-btn" style="display: none;">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Library - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/library.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Access Control Check -->
+    <div id="access-denied" class="access-denied" style="display: none;">
+        <div class="access-denied-content">
+            <div class="access-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Access Restricted</h2>
+            <p>This page is only available to registered users. Please sign up or log in to access our Book Library.</p>
+            <div class="access-actions">
+                <button class="access-btn signin-btn" onclick="window.authManager?.openModal('signin')">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <button class="access-btn signup-btn" onclick="window.authManager?.openModal('signup')">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until access granted) -->
+    <div id="main-content" style="display: none;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <div class="logo-star">
+                        <svg width="40" height="40" viewBox="0 0 40 40">
+                            <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">TARG STAR</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">AI Lessons</a></li>
+                    <li><a href="library.html" class="active">Book Library</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-auth">
+                    <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                    <div class="signup-dropdown">
+                        <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                        <div class="dropdown-menu" id="signup-dropdown-menu">
+                            <div class="dropdown-header">
+                                <span class="dropdown-title">Menu</span>
+                                <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Create Account</span>
+                            </button>
+                            <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
+                            </button>
+                            <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                            <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                            <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </button>
+                            <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </button>
+                            <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                                <i class="fas fa-box"></i>
+                                <span>Orders</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="user-menu" class="user-menu" style="display: none;">
+                        <span id="user-name"></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Library Hero -->
+        <section class="library-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>📚 TARG STAR Book Library</h1>
+                    <p>Your Gateway to Advanced AI & Technology Learning</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">8+</span>
+                            <span class="stat-label">Premium Books</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">Coding Languages</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Practical Learning</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <div class="container">
+                <div class="mission-content">
+                    <h2>Our Mission</h2>
+                    <p>At TARG STAR, we believe in democratizing access to cutting-edge AI and technology education. Our carefully curated book library provides comprehensive learning materials that bridge the gap between theoretical knowledge and practical application.</p>
+                    
+                    <div class="mission-grid">
+                        <div class="mission-item">
+                            <i class="fas fa-brain"></i>
+                            <h3>AI-First Learning</h3>
+                            <p>Master artificial intelligence from fundamentals to advanced applications</p>
+                        </div>
+                        <div class="mission-item">
+                            <i class="fas fa-code"></i>
+                            <h3>Hands-On Coding</h3>
+                            <p>Learn by building real projects with modern programming languages</p>
+                        </div>
+                        <div class="mission-item">
+                            <i class="fas fa-rocket"></i>
+                            <h3>Career Ready</h3>
+                            <p>Gain skills that directly translate to industry opportunities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Educational Videos Section -->
+        <section class="videos-section">
+            <div class="container">
+                <h2>Meet TARG STAR</h2>
+                <p>Discover who we are and what we teach through our introductory videos</p>
+                
+                <div class="videos-grid">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/intro-video.jpg" alt="Introduction to TARG STAR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIyNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbnRybyBWaWRlbzwvdGV4dD48L3N2Zz4='">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">5:30</div>
+                        </div>
+                        <div class="video-info">
+                            <h3>Welcome to TARG STAR</h3>
+                            <p>Learn about our mission, vision, and commitment to AI education excellence.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/curriculum-video.jpg" alt="Our Curriculum" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIyNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZENzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkN1cnJpY3VsdW08L3RleHQ+PC9zdmc+'">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">8:45</div>
+                        </div>
+                        <div class="video-info">
+                            <h3>Our Teaching Methodology</h3>
+                            <p>Discover our unique approach to AI and technology education.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/success-video.jpg" alt="Student Success Stories" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIyNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjhjNzQzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5TdWNjZXNzPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">6:20</div>
+                        </div>
+                        <div class="video-info">
+                            <h3>Student Success Stories</h3>
+                            <p>Hear from our graduates who transformed their careers with TARG STAR.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Books Collection -->
+        <section class="books-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>📖 Premium Book Collection</h2>
+                    <p>Comprehensive learning materials for AI and technology mastery</p>
+                </div>
+                
+                <div class="books-filter">
+                    <button class="filter-btn active" data-category="all">All Books</button>
+                    <button class="filter-btn" data-category="coding">Coding</button>
+                    <button class="filter-btn" data-category="ai">AI & ML</button>
+                    <button class="filter-btn" data-category="web">Web Development</button>
+                    <button class="filter-btn" data-category="database">Database</button>
+                </div>
+                
+                <div class="books-grid">
+                    <!-- Python Book -->
+                    <div class="book-card" data-category="coding" data-book="python-mastery">
+                        <div class="book-cover">
+                            <img src="images/python-book.jpg" alt="Python Mastery" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzc3NmFiIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZDQzYiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkBAPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+UFlUSE9OPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TUFTVEVSWTY8L3RleHQ+PC9zdmc+'">
+                            <div class="book-badge">Bestseller</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Python Mastery: From Beginner to Expert</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9/5)</span>
+                            </div>
+                            <div class="book-price">$49.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('python-mastery')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="Python Mastery Book" data-price="49.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- HTML & CSS Book -->
+                    <div class="book-card" data-category="web" data-book="html-css-mastery">
+                        <div class="book-cover">
+                            <img src="images/html-css-book.jpg" alt="HTML & CSS Mastery" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTM0ZjI2Ii8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj48L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5IVE1MICYgQ1NTPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TUFTVEVSWTY8L3RleHQ+PC9zdmc+'">
+                            <div class="book-badge">Popular</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>HTML & CSS: Complete Web Design</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.8/5)</span>
+                            </div>
+                            <div class="book-price">$39.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('html-css-mastery')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="HTML CSS Mastery Book" data-price="39.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JavaScript Book -->
+                    <div class="book-card" data-category="web" data-book="javascript-advanced">
+                        <div class="book-cover">
+                            <img src="images/javascript-book.jpg" alt="Advanced JavaScript" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjdkZjFlIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkpTPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMzMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5KQVZBU0NSSVBUPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMzMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5BRFZBTkNFRDwvdGV4dD48L3N2Zz4='">
+                            <div class="book-badge">New</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Advanced JavaScript & ES6+</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9/5)</span>
+                            </div>
+                            <div class="book-price">$44.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('javascript-advanced')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="Advanced JavaScript Book" data-price="44.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- React Book -->
+                    <div class="book-card" data-category="web" data-book="react-complete">
+                        <div class="book-cover">
+                            <img src="images/react-book.jpg" alt="React Complete Guide" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjFkYWZiIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKaOzwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjYwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMzMzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+UkVBQ1Q8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI3MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNPTVBMRVRFPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="book-badge">Hot</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>React: Complete Developer Guide</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9/5)</span>
+                            </div>
+                            <div class="book-price">$54.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('react-complete')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="React Complete Guide Book" data-price="54.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Firebase Book -->
+                    <div class="book-card" data-category="database" data-book="firebase-mastery">
+                        <div class="book-cover">
+                            <img src="images/firebase-book.jpg" alt="Firebase Complete Guide" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZDQTI4Ii8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI0ZGNTcyMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCflKU8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkZJUkVCQVNFPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMzMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5NQVNURVJZPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="book-badge">Complete</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Firebase: Beginner to Advanced</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.8/5)</span>
+                            </div>
+                            <div class="book-price">$59.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('firebase-mastery')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="Firebase Complete Guide Book" data-price="59.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Machine Learning Book -->
+                    <div class="book-card" data-category="ai" data-book="ml-fundamentals">
+                        <div class="book-cover">
+                            <img src="images/ml-book.jpg" alt="Machine Learning Fundamentals" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn6SWPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TUFDSELORSQ8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI3MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5MRUFOSU5HPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="book-badge">AI</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Machine Learning Fundamentals</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9/5)</span>
+                            </div>
+                            <div class="book-price">$64.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('ml-fundamentals')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="Machine Learning Fundamentals Book" data-price="64.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deep Learning Book -->
+                    <div class="book-card" data-category="ai" data-book="deep-learning-guide">
+                        <div class="book-cover">
+                            <img src="images/dl-book.jpg" alt="Deep Learning Complete Guide" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjhjNzQzIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn6egPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+REVFUCBMPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TEVBUK5JTkc8L3RleHQ+PC9zdmc+'">
+                            <div class="book-badge">Advanced</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Deep Learning: Complete Guide</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9/5)</span>
+                            </div>
+                            <div class="book-price">$69.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('deep-learning-guide')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="Deep Learning Complete Guide Book" data-price="69.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Natural Language Processing Book -->
+                    <div class="book-card" data-category="ai" data-book="nlp-mastery">
+                        <div class="book-cover">
+                            <img src="images/nlp-book.jpg" alt="NLP Mastery" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjOWM4OGZmIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn5SSPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TkxQPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TUFTVEVSWTY8L3RleHQ+PC9zdmc+'">
+                            <div class="book-badge">Expert</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Natural Language Processing Mastery</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.8/5)</span>
+                            </div>
+                            <div class="book-price">$74.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('nlp-mastery')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="NLP Mastery Book" data-price="74.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Computer Vision Book -->
+                    <div class="book-card" data-category="ai" data-book="computer-vision">
+                        <div class="book-cover">
+                            <img src="images/cv-book.jpg" alt="Computer Vision Guide" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmY2YjZiIi8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn5GTPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q09NUFVURVIgVjwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjcwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPklTSU9OPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="book-badge">Vision</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>Computer Vision: From Theory to Practice</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.9/5)</span>
+                            </div>
+                            <div class="book-price">$67.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('computer-vision')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="Computer Vision Guide Book" data-price="67.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Ethics Book -->
+                    <div class="book-card" data-category="ai" data-book="ai-ethics">
+                        <div class="book-cover">
+                            <img src="images/ai-ethics-book.jpg" alt="AI Ethics Guide" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNGVjZGM0Ii8+PHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn6SSPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+QUkgRVRISUNTPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+R1VJREUgPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="book-badge">Ethics</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>AI Ethics & Responsible Development</h3>
+                            <p class="book-author">By TARG STAR Team</p>
+                            <div class="book-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-text">(4.7/5)</span>
+                            </div>
+                            <div class="book-price">$49.99</div>
+                            <div class="book-actions">
+                                <button class="view-book-btn" onclick="openBookDetails('ai-ethics')">View Details</button>
+                                <button class="add-to-cart-btn" data-item="AI Ethics Guide Book" data-price="49.99" data-type="book">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Book Details Modal -->
+    <div id="book-details-modal" class="modal">
+        <div class="modal-content book-modal-content">
+            <span class="close">&times;</span>
+            <div id="book-details-content">
+                <!-- Book details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In to TARG STAR</h2>
+                <div class="auth-message" id="signin-message"></div>
+                
+                <!-- Google Sign-In Button -->
+                <button type="button" class="google-auth-btn" onclick="window.authManager?.handleGoogleSignIn()">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In with Email</button>
+                </form>
+                
+                <div class="auth-links">
+                    <a href="#" onclick="window.authManager?.showForgotPassword()">Forgot Password?</a>
+                </div>
+                
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Join TARG STAR</h2>
+                <div class="auth-message" id="signup-message"></div>
+                
+                <!-- Google Sign-Up Button -->
+                <button type="button" class="google-auth-btn" onclick="window.authManager?.handleGoogleSignUp()">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign up with Google
+                </button>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password (min. 6 characters)" required>
+                    <button type="submit">Create Account</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals through comprehensive learning resources.</p>
+                    <div class="social-media">
+                        <h4>Follow Us</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="#" class="social-link telegram">
+                                <i class="fab fa-telegram-plane"></i>
+                                <span>Telegram</span>
+                            </a>
+                            <a href="#" class="social-link instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#" class="social-link twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="#" class="social-link youtube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                            <a href="#" class="social-link linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Learning Paths</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="lesson-ml.html">Machine Learning</a></li>
+                        <li><a href="lesson-nlp.html">Natural Language Processing</a></li>
+                        <li><a href="lesson-dl.html">Deep Learning</a></li>
+                        <li><a href="lesson-cv.html">Computer Vision</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="library.html">Book Library</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="orders.html">Orders</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Order Support</a></li>
+                        <li><a href="settings.html">Settings</a></li>
+                    </ul>
+                    <div class="settings-icon" onclick="window.location.href='settings.html'">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +251 911 123456</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Addis Ababa, Bole, Ethiopia</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved. | Empowering AI Education in Ethiopia</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Library-specific JavaScript
+        class LibraryManager {
+            constructor() {
+                this.bookData = this.initializeBookData();
+                this.initializeLibrary();
+            }
+
+            initializeLibrary() {
+                // Check access control
+                this.checkAccess();
+                
+                // Initialize filter functionality
+                this.initializeFilters();
+                
+                // Initialize add to cart functionality
+                this.initializeAddToCart();
+                
+                // Initialize video functionality
+                this.initializeVideos();
+            }
+
+            checkAccess() {
+                const accessDenied = document.getElementById('access-denied');
+                const mainContent = document.getElementById('main-content');
+                
+                // Check if user is logged in
+                const savedUser = localStorage.getItem('targstar_user');
+                const isLoggedIn = savedUser && JSON.parse(savedUser);
+                
+                if (isLoggedIn) {
+                    // User is logged in, show main content
+                    accessDenied.style.display = 'none';
+                    mainContent.style.display = 'block';
+                } else {
+                    // User is not logged in, show access denied
+                    accessDenied.style.display = 'flex';
+                    mainContent.style.display = 'none';
+                }
+            }
+
+            initializeFilters() {
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                const bookCards = document.querySelectorAll('.book-card');
+
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Update active filter
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        const category = btn.dataset.category;
+
+                        // Filter books
+                        bookCards.forEach(card => {
+                            if (category === 'all' || card.dataset.category === category) {
+                                card.style.display = 'block';
+                                card.style.animation = 'fadeIn 0.5s ease';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            }
+
+            initializeAddToCart() {
+                const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+                
+                addToCartBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        const item = btn.dataset.item;
+                        const price = parseFloat(btn.dataset.price);
+                        const type = btn.dataset.type;
+                        
+                        // Add to cart using existing cart functionality
+                        if (window.addToCart) {
+                            window.addToCart(item, price, type);
+                        }
+                        
+                        // Show success feedback
+                        btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+                        btn.style.background = 'linear-gradient(135deg, #28c743, #20a83a)';
+                        
+                        setTimeout(() => {
+                            btn.innerHTML = 'Add to Cart';
+                            btn.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+                        }, 2000);
+                    });
+                });
+            }
+
+            initializeVideos() {
+                const videoCards = document.querySelectorAll('.video-card');
+                
+                videoCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        // Create video modal
+                        this.showVideoModal(card);
+                    });
+                });
+            }
+
+            showVideoModal(videoCard) {
+                const title = videoCard.querySelector('h3').textContent;
+                const description = videoCard.querySelector('p').textContent;
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 800px;">
+                        <span class="close">&times;</span>
+                        <div class="video-modal-content">
+                            <h2>${title}</h2>
+                            <div class="video-placeholder" style="background: #000; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 10px; margin: 20px 0;">
+                                <div style="text-align: center; color: white;">
+                                    <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom: 15px;"></i>
+                                    <p style="font-size: 1.2rem;">Video Coming Soon</p>
+                                    <p style="opacity: 0.8;">This educational video will be available shortly</p>
+                                </div>
+                            </div>
+                            <p style="color: #666; line-height: 1.6;">${description}</p>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Close modal functionality
+                const closeBtn = modal.querySelector('.close');
+                closeBtn.addEventListener('click', () => {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                });
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            initializeBookData() {
+                return {
+                    'python-mastery': {
+                        title: 'Python Mastery: From Beginner to Expert',
+                        author: 'TARG STAR Team',
+                        price: 49.99,
+                        description: 'Master Python programming from basics to advanced concepts. This comprehensive guide covers everything from syntax and data structures to web development, data science, and machine learning applications.',
+                        features: [
+                            'Complete Python syntax and fundamentals',
+                            'Object-oriented programming concepts',
+                            'Web development with Django and Flask',
+                            'Data science with NumPy, Pandas, and Matplotlib',
+                            'Machine learning integration',
+                            '50+ hands-on projects',
+                            'Real-world case studies',
+                            'Career guidance and best practices'
+                        ],
+                        chapters: 15,
+                        pages: 450,
+                        level: 'Beginner to Advanced',
+                        duration: '8-12 weeks'
+                    },
+                    'html-css-mastery': {
+                        title: 'HTML & CSS: Complete Web Design',
+                        author: 'TARG STAR Team',
+                        price: 39.99,
+                        description: 'Learn modern web design with HTML5 and CSS3. Build responsive, accessible, and beautiful websites from scratch with this comprehensive guide.',
+                        features: [
+                            'HTML5 semantic elements and structure',
+                            'CSS3 advanced styling and animations',
+                            'Responsive design and mobile-first approach',
+                            'Flexbox and CSS Grid layouts',
+                            'Modern CSS frameworks',
+                            'Web accessibility best practices',
+                            '30+ practical projects',
+                            'Portfolio development guidance'
+                        ],
+                        chapters: 12,
+                        pages: 380,
+                        level: 'Beginner to Intermediate',
+                        duration: '6-8 weeks'
+                    },
+                    'javascript-advanced': {
+                        title: 'Advanced JavaScript & ES6+',
+                        author: 'TARG STAR Team',
+                        price: 44.99,
+                        description: 'Master modern JavaScript with ES6+ features, async programming, and advanced concepts. Perfect for developers ready to take their JavaScript skills to the next level.',
+                        features: [
+                            'ES6+ features and syntax',
+                            'Async/await and Promises',
+                            'Advanced DOM manipulation',
+                            'Module systems and bundling',
+                            'Testing and debugging techniques',
+                            'Performance optimization',
+                            'Node.js fundamentals',
+                            '40+ coding challenges'
+                        ],
+                        chapters: 14,
+                        pages: 420,
+                        level: 'Intermediate to Advanced',
+                        duration: '8-10 weeks'
+                    },
+                    'react-complete': {
+                        title: 'React: Complete Developer Guide',
+                        author: 'TARG STAR Team',
+                        price: 54.99,
+                        description: 'Build modern web applications with React. Learn hooks, state management, routing, and advanced patterns in this comprehensive React guide.',
+                        features: [
+                            'React fundamentals and JSX',
+                            'Hooks and functional components',
+                            'State management with Redux',
+                            'React Router for navigation',
+                            'Testing React applications',
+                            'Performance optimization',
+                            'Deployment strategies',
+                            '25+ real-world projects'
+                        ],
+                        chapters: 16,
+                        pages: 480,
+                        level: 'Intermediate to Advanced',
+                        duration: '10-12 weeks'
+                    },
+                    'firebase-mastery': {
+                        title: 'Firebase: Beginner to Advanced',
+                        author: 'TARG STAR Team',
+                        price: 59.99,
+                        description: 'Master Google Firebase for backend development. Learn authentication, database management, cloud functions, and deployment in this complete Firebase guide.',
+                        features: [
+                            'Firebase Authentication systems',
+                            'Firestore database management',
+                            'Cloud Functions development',
+                            'Firebase Hosting and deployment',
+                            'Real-time data synchronization',
+                            'Security rules and best practices',
+                            'Analytics and monitoring',
+                            '20+ full-stack projects'
+                        ],
+                        chapters: 13,
+                        pages: 400,
+                        level: 'Beginner to Advanced',
+                        duration: '8-10 weeks'
+                    },
+                    'ml-fundamentals': {
+                        title: 'Machine Learning Fundamentals',
+                        author: 'TARG STAR Team',
+                        price: 64.99,
+                        description: 'Comprehensive introduction to machine learning concepts, algorithms, and practical applications. Perfect for beginners entering the AI field.',
+                        features: [
+                            'ML algorithms and theory',
+                            'Supervised and unsupervised learning',
+                            'Python libraries (scikit-learn, pandas)',
+                            'Data preprocessing and feature engineering',
+                            'Model evaluation and validation',
+                            'Real-world case studies',
+                            'Industry best practices',
+                            '30+ hands-on exercises'
+                        ],
+                        chapters: 18,
+                        pages: 520,
+                        level: 'Beginner to Intermediate',
+                        duration: '12-14 weeks'
+                    },
+                    'deep-learning-guide': {
+                        title: 'Deep Learning: Complete Guide',
+                        author: 'TARG STAR Team',
+                        price: 69.99,
+                        description: 'Master deep learning with neural networks, TensorFlow, and PyTorch. Build advanced AI models for computer vision, NLP, and more.',
+                        features: [
+                            'Neural network architectures',
+                            'TensorFlow and PyTorch frameworks',
+                            'Convolutional Neural Networks (CNNs)',
+                            'Recurrent Neural Networks (RNNs)',
+                            'Transfer learning techniques',
+                            'Model optimization and deployment',
+                            'GPU computing and cloud platforms',
+                            '25+ deep learning projects'
+                        ],
+                        chapters: 20,
+                        pages: 580,
+                        level: 'Intermediate to Advanced',
+                        duration: '14-16 weeks'
+                    },
+                    'nlp-mastery': {
+                        title: 'Natural Language Processing Mastery',
+                        author: 'TARG STAR Team',
+                        price: 74.99,
+                        description: 'Master NLP with modern techniques including transformers, BERT, and GPT models. Build chatbots, sentiment analysis, and language understanding systems.',
+                        features: [
+                            'Text preprocessing and tokenization',
+                            'Traditional NLP techniques',
+                            'Transformer architectures',
+                            'BERT, GPT, and modern models',
+                            'Sentiment analysis and classification',
+                            'Chatbot development',
+                            'Language generation',
+                            '20+ NLP projects'
+                        ],
+                        chapters: 17,
+                        pages: 500,
+                        level: 'Intermediate to Advanced',
+                        duration: '12-14 weeks'
+                    },
+                    'computer-vision': {
+                        title: 'Computer Vision: From Theory to Practice',
+                        author: 'TARG STAR Team',
+                        price: 67.99,
+                        description: 'Learn computer vision with OpenCV, deep learning, and modern techniques. Build image recognition, object detection, and visual AI systems.',
+                        features: [
+                            'Image processing fundamentals',
+                            'OpenCV library mastery',
+                            'Feature detection and matching',
+                            'Object detection and tracking',
+                            'Deep learning for vision',
+                            'Face recognition systems',
+                            'Augmented reality basics',
+                            '30+ vision projects'
+                        ],
+                        chapters: 16,
+                        pages: 460,
+                        level: 'Intermediate to Advanced',
+                        duration: '10-12 weeks'
+                    },
+                    'ai-ethics': {
+                        title: 'AI Ethics & Responsible Development',
+                        author: 'TARG STAR Team',
+                        price: 49.99,
+                        description: 'Understand the ethical implications of AI development. Learn responsible AI practices, bias mitigation, and ethical decision-making in AI systems.',
+                        features: [
+                            'AI ethics frameworks',
+                            'Bias detection and mitigation',
+                            'Fairness in machine learning',
+                            'Privacy and data protection',
+                            'Explainable AI techniques',
+                            'Regulatory compliance',
+                            'Case studies and scenarios',
+                            'Industry best practices'
+                        ],
+                        chapters: 12,
+                        pages: 350,
+                        level: 'All Levels',
+                        duration: '6-8 weeks'
+                    }
+                };
+            }
+        }
+
+        // Global function to open book details
+        window.openBookDetails = function(bookId) {
+            const libraryManager = window.libraryManager || new LibraryManager();
+            const bookData = libraryManager.bookData[bookId];
+            
+            if (!bookData) {
+                console.error('Book data not found for:', bookId);
+                return;
+            }
+            
+            const modal = document.getElementById('book-details-modal');
+            const content = document.getElementById('book-details-content');
+            
+            content.innerHTML = `
+                <div class="book-details">
+                    <div class="book-header">
+                        <div class="book-cover-large">
+                            <img src="images/${bookId}-book.jpg" alt="${bookData.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5CT09LPC90ZXh0Pjwvc3ZnPg=='">
+                        </div>
+                        <div class="book-info-detailed">
+                            <h2>${bookData.title}</h2>
+                            <p class="book-author">By ${bookData.author}</p>
+                            <div class="book-meta">
+                                <span><i class="fas fa-book"></i> ${bookData.chapters} Chapters</span>
+                                <span><i class="fas fa-file-alt"></i> ${bookData.pages} Pages</span>
+                                <span><i class="fas fa-clock"></i> ${bookData.duration}</span>
+                                <span><i class="fas fa-signal"></i> ${bookData.level}</span>
+                            </div>
+                            <div class="book-price-large">$${bookData.price}</div>
+                            <div class="book-actions-large">
+                                <button class="add-to-cart-btn-large" onclick="window.addToCart('${bookData.title}', ${bookData.price}, 'book')">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="preview-btn" onclick="alert('Preview feature coming soon!')">
+                                    <i class="fas fa-eye"></i> Preview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-description">
+                        <h3>About This Book</h3>
+                        <p>${bookData.description}</p>
+                    </div>
+                    
+                    <div class="book-features">
+                        <h3>What You'll Learn</h3>
+                        <ul>
+                            ${bookData.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="book-guarantee">
+                        <div class="guarantee-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>30-Day Money Back Guarantee</h4>
+                                <p>Not satisfied? Get a full refund within 30 days.</p>
+                            </div>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4>Instant Access</h4>
+                                <p>Download immediately after purchase.</p>
+                            </div>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <div>
+                                <h4>Lifetime Updates</h4>
+                                <p>Get all future updates and revisions for free.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+
+        // Initialize library when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.libraryManager = new LibraryManager();
+            
+            // Close book details modal
+            const modal = document.getElementById('book-details-modal');
+            const closeBtn = modal.querySelector('.close');
+            
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Fundamentals - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/lesson.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Hero -->
+    <section class="course-hero">
+        <div class="container">
+            <div class="course-hero-content">
+                <div class="course-info">
+                    <div class="course-breadcrumb">
+                        <a href="index.html">Home</a> > 
+                        <a href="lessons.html">Courses</a> > 
+                        <span>Machine Learning Fundamentals</span>
+                    </div>
+                    <h1>Machine Learning Fundamentals</h1>
+                    <p>Master the core concepts of machine learning and build your first AI models</p>
+                    
+                    <div class="course-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>8 weeks</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-signal"></i>
+                            <span>Beginner</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>1,234 students</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>4.8 (456 reviews)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="course-actions">
+                        <div class="course-price">
+                            <span class="current-price">$99</span>
+                            <span class="original-price">$149</span>
+                        </div>
+                        <button class="enroll-btn add-to-cart" data-item="Machine Learning Course" data-price="99">
+                            <i class="fas fa-shopping-cart"></i>
+                            Enroll Now
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="course-preview">
+                    <div class="video-placeholder">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Course Preview</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Content -->
+    <section class="course-content">
+        <div class="container">
+            <div class="content-layout">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Course Description -->
+                    <div class="content-section">
+                        <h2>Course Description</h2>
+                        <p>This comprehensive course introduces you to the exciting world of machine learning. You'll learn the fundamental concepts, algorithms, and techniques used to build intelligent systems that can learn from data.</p>
+                        
+                        <p>Whether you're a complete beginner or have some programming experience, this course will guide you through the essential concepts of machine learning, from basic statistics to advanced algorithms.</p>
+                        
+                        <h3>What You'll Learn</h3>
+                        <ul class="learning-objectives">
+                            <li>Understand the fundamentals of machine learning and its applications</li>
+                            <li>Learn supervised learning algorithms (regression, classification)</li>
+                            <li>Master unsupervised learning techniques (clustering, dimensionality reduction)</li>
+                            <li>Implement machine learning models using Python and scikit-learn</li>
+                            <li>Evaluate model performance and avoid overfitting</li>
+                            <li>Work with real-world datasets and preprocessing techniques</li>
+                            <li>Build end-to-end machine learning projects</li>
+                        </ul>
+                    </div>
+
+                    <!-- Course Curriculum -->
+                    <div class="content-section">
+                        <h2>Course Curriculum</h2>
+                        <div class="curriculum">
+                            <div class="module">
+                                <div class="module-header">
+                                    <h3>Module 1: Introduction to Machine Learning</h3>
+                                    <span class="module-duration">Week 1 • 5 lessons • 2 hours</span>
+                                </div>
+                                <div class="module-content">
+                                    <div class="lesson">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>What is Machine Learning?</span>
+                                        <span class="lesson-duration">15 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>Types of Machine Learning</span>
+                                        <span class="lesson-duration">20 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>Setting Up Your Environment</span>
+                                        <span class="lesson-duration">25 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Python for Machine Learning</span>
+                                        <span class="lesson-duration">30 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-tasks"></i>
+                                        <span>Your First ML Model</span>
+                                        <span class="lesson-duration">30 min</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="module">
+                                <div class="module-header">
+                                    <h3>Module 2: Data Preprocessing</h3>
+                                    <span class="module-duration">Week 2 • 4 lessons • 1.5 hours</span>
+                                </div>
+                                <div class="module-content">
+                                    <div class="lesson">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>Understanding Your Data</span>
+                                        <span class="lesson-duration">20 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>Handling Missing Data</span>
+                                        <span class="lesson-duration">25 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>Feature Scaling and Normalization</span>
+                                        <span class="lesson-duration">20 min</span>
+                                    </div>
+                                    <div class="lesson">
+                                        <i class="fas fa-tasks"></i>
+                                        <span>Data Preprocessing Project</span>
+                                        <span class="lesson-duration">25 min</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="module">
+                                <div class="module-header">
+                                    <h3>Module 3: Supervised Learning - Regression</h3>
+                                    <span class="module-duration">Week 3-4 • 6 lessons • 3 hours</span>
+                                </div>
+                                <div class="module-content">
+                                    <div class="lesson locked">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Linear Regression</span>
+                                        <span class="lesson-duration">30 min</span>
+                                    </div>
+                                    <div class="lesson locked">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Polynomial Regression</span>
+                                        <span class="lesson-duration">25 min</span>
+                                    </div>
+                                    <div class="lesson locked">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Regularization Techniques</span>
+                                        <span class="lesson-duration">35 min</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="module">
+                                <div class="module-header">
+                                    <h3>Module 4: Supervised Learning - Classification</h3>
+                                    <span class="module-duration">Week 5-6 • 6 lessons • 3 hours</span>
+                                </div>
+                                <div class="module-content">
+                                    <div class="lesson locked">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Logistic Regression</span>
+                                        <span class="lesson-duration">30 min</span>
+                                    </div>
+                                    <div class="lesson locked">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Decision Trees</span>
+                                        <span class="lesson-duration">25 min</span>
+                                    </div>
+                                    <div class="lesson locked">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Random Forest</span>
+                                        <span class="lesson-duration">30 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructor -->
+                    <div class="content-section">
+                        <h2>Meet Your Instructor</h2>
+                        <div class="instructor-card">
+                            <div class="instructor-avatar">
+                                <img src="images/instructor-ml.jpg" alt="Dr. Sarah Chen" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzY2N2VlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+U0M8L3RleHQ+PC9zdmc+'">
+                            </div>
+                            <div class="instructor-info">
+                                <h3>Dr. Sarah Chen</h3>
+                                <p class="instructor-title">Senior Machine Learning Engineer at TechCorp</p>
+                                <p class="instructor-bio">Dr. Chen has over 8 years of experience in machine learning and has published 15+ research papers. She holds a PhD in Computer Science from Stanford University and has worked on ML projects at Google and Microsoft.</p>
+                                <div class="instructor-stats">
+                                    <div class="stat">
+                                        <strong>4.9</strong>
+                                        <span>Instructor Rating</span>
+                                    </div>
+                                    <div class="stat">
+                                        <strong>12,450</strong>
+                                        <span>Students Taught</span>
+                                    </div>
+                                    <div class="stat">
+                                        <strong>5</strong>
+                                        <span>Courses</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="content-section">
+                        <h2>Student Reviews</h2>
+                        <div class="reviews">
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-info">
+                                        <div class="reviewer-avatar">JD</div>
+                                        <div>
+                                            <h4>John Doe</h4>
+                                            <div class="review-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="review-date">2 weeks ago</span>
+                                </div>
+                                <p>"Excellent course! Dr. Chen explains complex concepts in a very understandable way. The hands-on projects really helped me grasp the material."</p>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-info">
+                                        <div class="reviewer-avatar">AS</div>
+                                        <div>
+                                            <h4>Alice Smith</h4>
+                                            <div class="review-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="review-date">1 month ago</span>
+                                </div>
+                                <p>"Perfect for beginners! I had no prior ML experience and now I feel confident building my own models. The course structure is well-organized."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Course Progress (for enrolled students) -->
+                    <div class="sidebar-card" id="progress-card" style="display: none;">
+                        <h3>Your Progress</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25%"></div>
+                        </div>
+                        <p>25% Complete (2 of 8 modules)</p>
+                        <button class="continue-btn">Continue Learning</button>
+                    </div>
+
+                    <!-- Course Features -->
+                    <div class="sidebar-card">
+                        <h3>Course Features</h3>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-video"></i> 20+ Video Lessons</li>
+                            <li><i class="fas fa-file-code"></i> Hands-on Coding Exercises</li>
+                            <li><i class="fas fa-project-diagram"></i> 3 Real-world Projects</li>
+                            <li><i class="fas fa-certificate"></i> Certificate of Completion</li>
+                            <li><i class="fas fa-infinity"></i> Lifetime Access</li>
+                            <li><i class="fas fa-mobile-alt"></i> Mobile & Desktop</li>
+                            <li><i class="fas fa-comments"></i> Community Support</li>
+                        </ul>
+                    </div>
+
+                    <!-- Prerequisites -->
+                    <div class="sidebar-card">
+                        <h3>Prerequisites</h3>
+                        <ul class="prerequisite-list">
+                            <li><i class="fas fa-check"></i> Basic Python programming</li>
+                            <li><i class="fas fa-check"></i> High school mathematics</li>
+                            <li><i class="fas fa-check"></i> Curiosity about AI!</li>
+                        </ul>
+                    </div>
+
+                    <!-- Related Courses -->
+                    <div class="sidebar-card">
+                        <h3>Related Courses</h3>
+                        <div class="related-courses">
+                            <div class="related-course">
+                                <img src="images/dl-course.jpg" alt="Deep Learning" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzc2NGJhMiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+REw8L3RleHQ+PC9zdmc+'">
+                                <div class="related-course-info">
+                                    <h4>Deep Learning Mastery</h4>
+                                    <div class="related-course-price">$149</div>
+                                </div>
+                            </div>
+                            
+                            <div class="related-course">
+                                <img src="images/nlp-course.jpg" alt="NLP" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI0ZGRDcwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiMzMzMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5OTFA8L3RleHQ+PC9zdmc+'">
+                                <div class="related-course-info">
+                                    <h4>Natural Language Processing</h4>
+                                    <div class="related-course-price">$129</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include common elements -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="lesson-ml.html">Machine Learning</a></li>
+                        <li><a href="lesson-dl.html">Deep Learning</a></li>
+                        <li><a href="lesson-nlp.html">NLP</a></li>
+                        <li><a href="lesson-cv.html">Computer Vision</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/lesson.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

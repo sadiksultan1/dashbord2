@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="settings.html" class="active">Settings</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="settings-hero">
+        <div class="container">
+            <h1>Settings & Preferences</h1>
+            <p>Customize your TARG STAR experience</p>
+        </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="settings-section">
+        <div class="container">
+            <div class="settings-grid">
+                <!-- Settings Navigation -->
+                <div class="settings-nav">
+                    <h3>Settings Menu</h3>
+                    <ul class="settings-menu">
+                        <li><a href="#website-preferences" class="settings-link active" data-section="website-preferences">
+                            <i class="fas fa-globe"></i>
+                            Website Preferences
+                        </a></li>
+                        <li><a href="#email-notifications" class="settings-link" data-section="email-notifications">
+                            <i class="fas fa-envelope"></i>
+                            Email Notifications
+                        </a></li>
+                        <li><a href="#course-reminders" class="settings-link" data-section="course-reminders">
+                            <i class="fas fa-bell"></i>
+                            Course Reminders
+                        </a></li>
+                        <li><a href="#marketing-emails" class="settings-link" data-section="marketing-emails">
+                            <i class="fas fa-bullhorn"></i>
+                            Marketing Emails
+                        </a></li>
+                        <li><a href="#account-settings" class="settings-link" data-section="account-settings">
+                            <i class="fas fa-user-cog"></i>
+                            Account Settings
+                        </a></li>
+                        <li><a href="#privacy-security" class="settings-link" data-section="privacy-security">
+                            <i class="fas fa-shield-alt"></i>
+                            Privacy & Security
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Settings Content -->
+                <div class="settings-content">
+                    <!-- Website Preferences -->
+                    <div id="website-preferences" class="settings-panel active">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-globe"></i> Website Preferences</h2>
+                            <p>Customize how you interact with our website</p>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3>Theme & Display</h3>
+                            <div class="setting-item">
+                                <label for="theme-selector">Website Theme</label>
+                                <select id="theme-selector" class="setting-input">
+                                    <option value="gold">Gold (Default)</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="green">Green</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="orange">Orange</option>
+                                    <option value="red">Red</option>
+                                </select>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label for="language-selector">Language</label>
+                                <select id="language-selector" class="setting-input">
+                                    <option value="en">English</option>
+                                    <option value="am">Amharic (አማርኛ)</option>
+                                    <option value="or">Oromo (Afaan Oromoo)</option>
+                                    <option value="ti">Tigrinya (ትግርኛ)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="checkbox-setting">
+                                    <input type="checkbox" id="dark-mode" checked>
+                                    <label for="dark-mode">Enable Dark Mode</label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="checkbox-setting">
+                                    <input type="checkbox" id="animations" checked>
+                                    <label for="animations">Enable Animations</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>URL Configuration</h3>
+                            <div class="url-list">
+                                <div class="url-item">
+                                    <label>Main Website</label>
+                                    <input type="url" value="https://targstar.ai" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>API Endpoint</label>
+                                    <input type="url" value="https://api.targstar.ai/v1" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>CDN Assets</label>
+                                    <input type="url" value="https://cdn.targstar.ai/assets" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Support Portal</label>
+                                    <input type="url" value="https://support.targstar.ai" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Learning Platform</label>
+                                    <input type="url" value="https://learn.targstar.ai" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Mobile App API</label>
+                                    <input type="url" value="https://mobile-api.targstar.ai/v2" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Notifications -->
+                    <div id="email-notifications" class="settings-panel">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-envelope"></i> Email Notifications</h2>
+                            <p>Manage your email notification preferences</p>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3>Notification Types</h3>
+                            <div class="notification-list">
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <h4>Course Updates</h4>
+                                        <p>Get notified when new lessons are added to your enrolled courses</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <h4>Assignment Deadlines</h4>
+                                        <p>Receive reminders about upcoming assignment due dates</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <h4>Certificate Availability</h4>
+                                        <p>Get notified when your course certificates are ready</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <h4>System Maintenance</h4>
+                                        <p>Important updates about scheduled maintenance and downtime</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Email Configuration URLs</h3>
+                            <div class="url-list">
+                                <div class="url-item">
+                                    <label>Email Service API</label>
+                                    <input type="url" value="https://email.targstar.ai/notifications" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Unsubscribe Portal</label>
+                                    <input type="url" value="https://targstar.ai/unsubscribe" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Email Templates</label>
+                                    <input type="url" value="https://templates.targstar.ai/email" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>SMTP Configuration</label>
+                                    <input type="url" value="https://smtp.targstar.ai:587" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Email Tracking</label>
+                                    <input type="url" value="https://tracking.targstar.ai/email" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Reminders -->
+                    <div id="course-reminders" class="settings-panel">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-bell"></i> Course Reminders</h2>
+                            <p>Set up reminders for your learning schedule</p>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3>Reminder Schedule</h3>
+                            <div class="reminder-settings">
+                                <div class="setting-item">
+                                    <label for="reminder-frequency">Reminder Frequency</label>
+                                    <select id="reminder-frequency" class="setting-input">
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly" selected>Weekly</option>
+                                        <option value="biweekly">Bi-weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label for="reminder-time">Preferred Time</label>
+                                    <input type="time" id="reminder-time" value="09:00" class="setting-input">
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label for="reminder-days">Days of Week</label>
+                                    <div class="day-selector">
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="monday" checked>
+                                            <span>Mon</span>
+                                        </label>
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="tuesday">
+                                            <span>Tue</span>
+                                        </label>
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="wednesday" checked>
+                                            <span>Wed</span>
+                                        </label>
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="thursday">
+                                            <span>Thu</span>
+                                        </label>
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="friday" checked>
+                                            <span>Fri</span>
+                                        </label>
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="saturday">
+                                            <span>Sat</span>
+                                        </label>
+                                        <label class="day-checkbox">
+                                            <input type="checkbox" value="sunday">
+                                            <span>Sun</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Reminder Service URLs</h3>
+                            <div class="url-list">
+                                <div class="url-item">
+                                    <label>Reminder API</label>
+                                    <input type="url" value="https://reminders.targstar.ai/course" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Schedule Manager</label>
+                                    <input type="url" value="https://schedule.targstar.ai/manage" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Push Notifications</label>
+                                    <input type="url" value="https://push.targstar.ai/notifications" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marketing Emails -->
+                    <div id="marketing-emails" class="settings-panel">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-bullhorn"></i> Marketing Emails</h2>
+                            <p>Control marketing and promotional email preferences</p>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3>Marketing Preferences</h3>
+                            <div class="marketing-list">
+                                <div class="marketing-item">
+                                    <div class="marketing-info">
+                                        <h4>New Course Announcements</h4>
+                                        <p>Be the first to know about new AI courses and specializations</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="marketing-item">
+                                    <div class="marketing-info">
+                                        <h4>Special Offers & Discounts</h4>
+                                        <p>Receive exclusive discounts and promotional offers</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="marketing-item">
+                                    <div class="marketing-info">
+                                        <h4>Industry News & Insights</h4>
+                                        <p>Stay updated with the latest AI industry trends and news</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="marketing-item">
+                                    <div class="marketing-info">
+                                        <h4>Event Invitations</h4>
+                                        <p>Get invited to webinars, workshops, and AI conferences</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="marketing-item">
+                                    <div class="marketing-info">
+                                        <h4>Partner Promotions</h4>
+                                        <p>Receive offers from our trusted AI tool and service partners</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Marketing Service URLs</h3>
+                            <div class="url-list">
+                                <div class="url-item">
+                                    <label>Marketing API</label>
+                                    <input type="url" value="https://marketing.targstar.ai/campaigns" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Newsletter Service</label>
+                                    <input type="url" value="https://newsletter.targstar.ai/subscribe" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Analytics Tracking</label>
+                                    <input type="url" value="https://analytics.targstar.ai/marketing" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <div class="url-item">
+                                    <label>Preference Center</label>
+                                    <input type="url" value="https://preferences.targstar.ai/marketing" class="url-input" readonly>
+                                    <button class="copy-btn" onclick="copyUrl(this)"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div id="account-settings" class="settings-panel">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-user-cog"></i> Account Settings</h2>
+                            <p>Manage your account information and preferences</p>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3>Profile Information</h3>
+                            <div class="profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-name">Full Name</label>
+                                        <input type="text" id="profile-name" value="John Doe" class="setting-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-email">Email Address</label>
+                                        <input type="email" id="profile-email" value="john.doe@example.com" class="setting-input">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-phone">Phone Number</label>
+                                        <input type="tel" id="profile-phone" value="+251-911-123456" class="setting-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-timezone">Timezone</label>
+                                        <select id="profile-timezone" class="setting-input">
+                                            <option value="Africa/Addis_Ababa" selected>East Africa Time (EAT)</option>
+                                            <option value="UTC">UTC</option>
+                                            <option value="America/New_York">Eastern Time</option>
+                                            <option value="Europe/London">GMT</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Account Actions</h3>
+                            <div class="account-actions">
+                                <div class="action-item">
+                                    <div class="action-info">
+                                        <h4>Change Password</h4>
+                                        <p>Update your account password for better security</p>
+                                    </div>
+                                    <button class="action-btn change-password-btn">
+                                        <i class="fas fa-key"></i>
+                                        Change Password
+                                    </button>
+                                </div>
+                                
+                                <div class="action-item">
+                                    <div class="action-info">
+                                        <h4>Download Data</h4>
+                                        <p>Download a copy of your personal data and course progress</p>
+                                    </div>
+                                    <button class="action-btn download-data-btn">
+                                        <i class="fas fa-download"></i>
+                                        Download Data
+                                    </button>
+                                </div>
+                                
+                                <div class="action-item logout-section">
+                                    <div class="action-info">
+                                        <h4>Logout from Account</h4>
+                                        <p>Sign out of your TARG STAR account on this device</p>
+                                    </div>
+                                    <button class="action-btn logout-settings-btn">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Logout
+                                    </button>
+                                </div>
+                                
+                                <div class="action-item danger-zone">
+                                    <div class="action-info">
+                                        <h4>Delete Account</h4>
+                                        <p>Permanently delete your account and all associated data</p>
+                                    </div>
+                                    <button class="action-btn delete-account-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                        Delete Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy & Security -->
+                    <div id="privacy-security" class="settings-panel">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-shield-alt"></i> Privacy & Security</h2>
+                            <p>Manage your privacy settings and account security</p>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h3>Privacy Settings</h3>
+                            <div class="privacy-list">
+                                <div class="privacy-item">
+                                    <div class="privacy-info">
+                                        <h4>Profile Visibility</h4>
+                                        <p>Control who can see your profile information</p>
+                                    </div>
+                                    <select class="setting-input">
+                                        <option value="public">Public</option>
+                                        <option value="students" selected>Students Only</option>
+                                        <option value="private">Private</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-info">
+                                        <h4>Course Progress Sharing</h4>
+                                        <p>Allow others to see your course completion status</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-info">
+                                        <h4>Data Analytics</h4>
+                                        <p>Help us improve by sharing anonymous usage data</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Save Button -->
+            <div class="settings-actions">
+                <button class="save-settings-btn">
+                    <i class="fas fa-save"></i>
+                    Save All Settings
+                </button>
+                <button class="reset-settings-btn">
+                    <i class="fas fa-undo"></i>
+                    Reset to Default
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include common elements -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="settings.html">Settings</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Technical Support</a></li>
+                        <li><a href="contact.html">Billing Support</a></li>
+                        <li><a href="contact.html">Course Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Bole Sub City, Addis Ababa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

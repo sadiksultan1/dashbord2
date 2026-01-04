@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="library.html">Book Library</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="active">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Hero -->
+    <section class="cart-hero">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <p>Review your selected courses and proceed to checkout</p>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-layout">
+                <!-- Cart Items -->
+                <div class="cart-items-container">
+                    <div class="cart-header">
+                        <h2>Your Items</h2>
+                        <button id="clear-cart" class="clear-cart-btn">
+                            <i class="fas fa-trash"></i> Clear Cart
+                        </button>
+                    </div>
+                    
+                    <div id="cart-items" class="cart-items">
+                        <!-- Cart items will be rendered here -->
+                    </div>
+                    
+                    <div class="continue-shopping">
+                        <a href="lessons.html" class="continue-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="cart-summary-container">
+                    <div class="cart-summary">
+                        <h3>Order Summary</h3>
+                        
+                        <div class="summary-details">
+                            <div class="summary-line">
+                                <span>Subtotal (<span id="item-count">0</span> items)</span>
+                                <span id="subtotal">$0.00</span>
+                            </div>
+                            
+                            <div class="summary-line">
+                                <span>Discount</span>
+                                <span id="discount" class="discount-amount">-$0.00</span>
+                            </div>
+                            
+                            <div class="summary-line">
+                                <span>Tax (10%)</span>
+                                <span id="tax">$0.00</span>
+                            </div>
+                            
+                            <div class="summary-line total-line">
+                                <span>Total</span>
+                                <span id="total">$0.00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="promo-code">
+                            <input type="text" id="promo-input" placeholder="Enter promo code">
+                            <button id="apply-promo" class="apply-promo-btn">Apply</button>
+                        </div>
+                        
+                        <button id="checkout-btn" class="checkout-btn">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Proceed to Checkout</span>
+                            <div class="checkout-btn-shine"></div>
+                        </button>
+                        
+                        <div class="payment-methods">
+                            <p>We accept:</p>
+                            <div class="payment-icons">
+                                <div class="payment-icon paypal" title="PayPal">
+                                    <i class="fab fa-paypal"></i>
+                                    <span>PayPal</span>
+                                </div>
+                                <div class="payment-icon bank" title="Bank Transfer">
+                                    <i class="fas fa-university"></i>
+                                    <span>Bank</span>
+                                </div>
+                                <div class="payment-icon vodafone" title="Vodafone Cash">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>Vodafone</span>
+                                </div>
+                                <div class="payment-icon cash" title="Cash Payment">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Cash</span>
+                                </div>
+                            </div>
+                            <div class="security-badges">
+                                <div class="security-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Secure</span>
+                                </div>
+                                <div class="security-badge">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Encrypted</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommended Items -->
+                    <div class="recommended-items">
+                        <h3>You might also like</h3>
+                        <div class="recommended-grid">
+                            <div class="recommended-item">
+                                <img src="images/ai-ethics.jpg" alt="AI Ethics" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDBiODk0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkV0aGljczwvdGV4dD48L3N2Zz4='">
+                                <div class="recommended-info">
+                                    <h4>AI Ethics Course</h4>
+                                    <div class="recommended-price">$79</div>
+                                    <button class="add-recommended" data-item="AI Ethics Course" data-price="79">Add</button>
+                                </div>
+                            </div>
+                            
+                            <div class="recommended-item">
+                                <img src="images/ai-toolkit.jpg" alt="AI Toolkit" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFJIFRvb2xzPC90ZXh0Pjwvc3ZnPg=='">
+                                <div class="recommended-info">
+                                    <h4>AI Toolkit</h4>
+                                    <div class="recommended-price">$149</div>
+                                    <button class="add-recommended" data-item="Premium AI Toolkit" data-price="149">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content checkout-modal-content">
+            <span class="close">&times;</span>
+            
+            <div class="checkout-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Review Order</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Payment Method</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Confirmation</div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Review Order -->
+            <div class="checkout-step" id="step-1">
+                <h2>Review Your Order</h2>
+                <div id="checkout-items-review" class="checkout-items-review">
+                    <div class="review-header">
+                        <h3>Order Items<span class="item-count-badge" id="review-item-count">0 items</span></h3>
+                    </div>
+                    <!-- Order items will be displayed here -->
+                </div>
+                <div class="checkout-total">
+                    <div class="order-summary-header">
+                        <h3>Order Summary</h3>
+                    </div>
+                    <div class="total-breakdown">
+                        <div class="total-line subtotal">
+                            <span>Subtotal</span>
+                            <span id="review-subtotal">$0.00</span>
+                        </div>
+                        <div class="total-line discount" id="review-discount-line" style="display: none;">
+                            <span>Discount</span>
+                            <span id="review-discount">-$0.00</span>
+                        </div>
+                        <div class="total-line tax">
+                            <span>Tax (10%)</span>
+                            <span id="review-tax">$0.00</span>
+                        </div>
+                        <div class="total-line final-total">
+                            <span>Total</span>
+                            <span class="total-amount" id="checkout-total">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="savings-highlight" id="savings-highlight" style="display: none;">
+                        <span class="savings-text" id="savings-text">You're saving $0.00!</span>
+                    </div>
+                </div>
+                <div class="step-actions">
+                    <button class="next-step-btn" data-next="2">Continue to Payment</button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Payment Method -->
+            <div class="checkout-step" id="step-2" style="display: none;">
+                <h2>Select Payment Method</h2>
+                <div class="payment-methods-grid">
+                    <label class="payment-method-option">
+                        <input type="radio" name="checkout-payment" value="paypal" checked>
+                        <div class="payment-method-card">
+                            <i class="fab fa-paypal"></i>
+                            <span>PayPal</span>
+                            <small>Secure online payment</small>
+                        </div>
+                    </label>
+                    
+                    <label class="payment-method-option">
+                        <input type="radio" name="checkout-payment" value="bank">
+                        <div class="payment-method-card">
+                            <i class="fas fa-university"></i>
+                            <span>Bank Transfer</span>
+                            <small>Direct bank payment</small>
+                        </div>
+                    </label>
+                    
+                    <label class="payment-method-option">
+                        <input type="radio" name="checkout-payment" value="vodafone">
+                        <div class="payment-method-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Vodafone Cash</span>
+                            <small>Mobile money payment</small>
+                        </div>
+                    </label>
+                    
+                    <label class="payment-method-option">
+                        <input type="radio" name="checkout-payment" value="cash">
+                        <div class="payment-method-card">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Cash Payment</span>
+                            <small>Pay at our centers</small>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="payment-details" id="checkout-payment-details">
+                    <!-- Payment details will be shown here -->
+                </div>
+                
+                <div class="step-actions">
+                    <button class="prev-step-btn" data-prev="1">Back</button>
+                    <button class="next-step-btn" data-next="3">Continue</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Confirmation -->
+            <div class="checkout-step" id="step-3" style="display: none;">
+                <h2>Order Confirmation</h2>
+                <div class="confirmation-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Order Placed Successfully!</h3>
+                    <p>Thank you for your purchase. You will receive a confirmation email shortly.</p>
+                    
+                    <div class="order-details">
+                        <div class="order-number">
+                            <strong>Order #: <span id="order-number"></span></strong>
+                        </div>
+                        <div class="order-total">
+                            <strong>Total: <span id="final-total">$0.00</span></strong>
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps">
+                        <h4>What's Next?</h4>
+                        <ul>
+                            <li>Check your email for order confirmation</li>
+                            <li>Access your courses in the learning dashboard</li>
+                            <li>Start your AI learning journey!</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="continue-learning-btn" onclick="window.location.href='lessons.html'">
+                        Continue Learning
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include common elements -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Order Support</a></li>
+                        <li><a href="contact.html">Returns</a></li>
+                        <li><a href="contact.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <!-- Use simplified Firebase configuration -->
+    <script src="js/firebase-simple.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- Use Firebase-integrated cart system -->
+    <script src="js/cart-firebase.js"></script>
+    <script src="js/cart-page.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

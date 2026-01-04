@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products & Services - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/products.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="library.html">Book Library</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="products-hero">
+        <div class="container">
+            <h1>Products & Services</h1>
+            <p>Comprehensive AI education solutions for individuals and organizations</p>
+        </div>
+    </section>
+
+    <!-- Product Categories -->
+    <section class="product-categories">
+        <div class="container">
+            <div class="category-nav">
+                <button class="category-btn active" data-category="all">All Products</button>
+                <button class="category-btn" data-category="courses">Courses</button>
+                <button class="category-btn" data-category="certifications">Certifications</button>
+                <button class="category-btn" data-category="tools">Tools</button>
+                <button class="category-btn" data-category="services">Services</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="container">
+            <div class="products-grid">
+                <!-- AI Certification Program -->
+                <div class="product-card" data-category="certifications" id="certification">
+                    <div class="product-image">
+                        <img src="images/certification.jpg" alt="AI Certification" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZENzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNFUlRJRklDQVRJT048L3RleHQ+PC9zdmc+'">
+                        <div class="product-badge">Popular</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>AI Professional Certification</h3>
+                        <p>Complete certification program covering all aspects of AI development and deployment.</p>
+                        <div class="product-features">
+                            <div class="feature"><i class="fas fa-check"></i> 6 Core Courses</div>
+                            <div class="feature"><i class="fas fa-check"></i> Hands-on Projects</div>
+                            <div class="feature"><i class="fas fa-check"></i> Industry Recognition</div>
+                            <div class="feature"><i class="fas fa-check"></i> Career Support</div>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">$299</span>
+                            <span class="original-price">$599</span>
+                        </div>
+                        <button class="add-to-cart" data-item="AI Professional Certification" data-price="299">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Premium AI Toolkit -->
+                <div class="product-card" data-category="tools" id="toolkit">
+                    <div class="product-image">
+                        <img src="images/toolkit.jpg" alt="AI Toolkit" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5UT09MS0lUPC90ZXh0Pjwvc3ZnPg=='">
+                        <div class="product-badge">New</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Premium AI Development Toolkit</h3>
+                        <p>Advanced tools, templates, and resources for AI development and deployment.</p>
+                        <div class="product-features">
+                            <div class="feature"><i class="fas fa-check"></i> 50+ Code Templates</div>
+                            <div class="feature"><i class="fas fa-check"></i> Model Zoo Access</div>
+                            <div class="feature"><i class="fas fa-check"></i> Deployment Scripts</div>
+                            <div class="feature"><i class="fas fa-check"></i> Priority Support</div>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">$149</span>
+                        </div>
+                        <button class="add-to-cart" data-item="Premium AI Toolkit" data-price="149">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- 1-on-1 Mentoring -->
+                <div class="product-card" data-category="services" id="mentoring">
+                    <div class="product-image">
+                        <img src="images/mentoring.jpg" alt="AI Mentoring" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDBiODk0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5NRU5UT1JJRJM8L3RleHQ+PC9zdmc+'">
+                    </div>
+                    <div class="product-info">
+                        <h3>1-on-1 AI Mentoring Sessions</h3>
+                        <p>Personal mentoring sessions with AI experts to accelerate your learning journey.</p>
+                        <div class="product-features">
+                            <div class="feature"><i class="fas fa-check"></i> Expert Guidance</div>
+                            <div class="feature"><i class="fas fa-check"></i> Personalized Learning</div>
+                            <div class="feature"><i class="fas fa-check"></i> Career Advice</div>
+                            <div class="feature"><i class="fas fa-check"></i> Project Reviews</div>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">$99</span>
+                            <span class="price-unit">/ session</span>
+                        </div>
+                        <button class="add-to-cart" data-item="AI Mentoring Session" data-price="99">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- AI Project Portfolio -->
+                <div class="product-card" data-category="services" id="portfolio">
+                    <div class="product-image">
+                        <img src="images/portfolio.jpg" alt="AI Portfolio" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTc0YzNjIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QT1JURk9MSU88L3RleHQ+PC9zdmc+'">
+                    </div>
+                    <div class="product-info">
+                        <h3>AI Project Portfolio Builder</h3>
+                        <p>Build a comprehensive portfolio of AI projects to showcase your skills to employers.</p>
+                        <div class="product-features">
+                            <div class="feature"><i class="fas fa-check"></i> 5 Guided Projects</div>
+                            <div class="feature"><i class="fas fa-check"></i> Code Reviews</div>
+                            <div class="feature"><i class="fas fa-check"></i> Portfolio Website</div>
+                            <div class="feature"><i class="fas fa-check"></i> Interview Prep</div>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">$199</span>
+                        </div>
+                        <button class="add-to-cart" data-item="AI Portfolio Builder" data-price="199">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Enterprise Training -->
+                <div class="product-card" data-category="services">
+                    <div class="product-image">
+                        <img src="images/enterprise.jpg" alt="Enterprise Training" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzQ0OTVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5FTlRFUlBSSVNFPC90ZXh0Pjwvc3ZnPg=='">
+                    </div>
+                    <div class="product-info">
+                        <h3>Enterprise AI Training</h3>
+                        <p>Custom AI training programs for organizations looking to upskill their teams.</p>
+                        <div class="product-features">
+                            <div class="feature"><i class="fas fa-check"></i> Custom Curriculum</div>
+                            <div class="feature"><i class="fas fa-check"></i> On-site Training</div>
+                            <div class="feature"><i class="fas fa-check"></i> Team Assessments</div>
+                            <div class="feature"><i class="fas fa-check"></i> Ongoing Support</div>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">Contact Us</span>
+                        </div>
+                        <button class="contact-btn" onclick="window.location.href='contact.html'">Get Quote</button>
+                    </div>
+                </div>
+
+                <!-- AI Research Papers Access -->
+                <div class="product-card" data-category="tools">
+                    <div class="product-image">
+                        <img src="images/research.jpg" alt="Research Access" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjM5YzEyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5SRVNFQVJDSDwvdGV4dD48L3N2Zz4='">
+                    </div>
+                    <div class="product-info">
+                        <h3>AI Research Papers Library</h3>
+                        <p>Access to curated collection of latest AI research papers and implementations.</p>
+                        <div class="product-features">
+                            <div class="feature"><i class="fas fa-check"></i> 1000+ Papers</div>
+                            <div class="feature"><i class="fas fa-check"></i> Code Implementations</div>
+                            <div class="feature"><i class="fas fa-check"></i> Weekly Updates</div>
+                            <div class="feature"><i class="fas fa-check"></i> Expert Summaries</div>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">$29</span>
+                            <span class="price-unit">/ month</span>
+                        </div>
+                        <button class="add-to-cart" data-item="Research Papers Access" data-price="29">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Methods Section -->
+    <section class="payment-methods">
+        <div class="container">
+            <h2>Secure Payment Methods</h2>
+            <p>Choose from multiple secure payment options for your convenience</p>
+            <div class="payment-grid">
+                <div class="payment-option" data-payment="paypal">
+                    <div class="payment-icon">
+                        <img src="images/paypal.png" alt="PayPal" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDAzMDg3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QYXlQYWw8L3RleHQ+PC9zdmc+'">
+                    </div>
+                    <h3>PayPal</h3>
+                    <p>Secure online payments with buyer protection and instant confirmation</p>
+                </div>
+                
+                <div class="payment-option" data-payment="bank">
+                    <div class="payment-icon">
+                        <img src="images/bank-transfer.png" alt="Bank Transfer" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmVjYzcxIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5CYW5rPC90ZXh0Pjwvc3ZnPg=='">
+                    </div>
+                    <h3>Bank Transfer</h3>
+                    <p>Direct bank transfers for institutional payments and bulk purchases</p>
+                </div>
+                
+                <div class="payment-option" data-payment="vodafone">
+                    <div class="payment-icon">
+                        <img src="images/vodafone-cash.png" alt="Vodafone Cash" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTYwMDEyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlZvZGFmb25lPC90ZXh0Pjwvc3ZnPg=='">
+                    </div>
+                    <h3>Vodafone Cash</h3>
+                    <p>Mobile money payments for quick and easy transactions</p>
+                </div>
+                
+                <div class="payment-option" data-payment="cash">
+                    <div class="payment-icon">
+                        <img src="images/cash.png" alt="Cash Payment" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmQ4NjU5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DYXNoPC90ZXh0Pjwvc3ZnPg=='">
+                    </div>
+                    <h3>Cash Payment</h3>
+                    <p>Pay in cash at our authorized centers and partner locations</p>
+                </div>
+            </div>
+            
+            <!-- Payment Trust Indicators -->
+            <div class="payment-trust">
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>SSL Secured</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>256-bit Encryption</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>PCI Compliant</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-undo"></i>
+                    <span>30-day Refund</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content checkout-modal-content">
+            <span class="close">&times;</span>
+            <div class="checkout-header">
+                <h2>Checkout</h2>
+            </div>
+            <div class="checkout-body">
+                <div class="checkout-item-info">
+                    <h3 id="checkout-item-name"></h3>
+                    <div class="checkout-price" id="checkout-price"></div>
+                </div>
+                
+                <div class="payment-selection">
+                    <h3>Select Payment Method</h3>
+                    <div class="payment-methods-grid">
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="paypal" checked>
+                            <div class="payment-method-card">
+                                <i class="fab fa-paypal"></i>
+                                <span>PayPal</span>
+                            </div>
+                        </label>
+                        
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="bank">
+                            <div class="payment-method-card">
+                                <i class="fas fa-university"></i>
+                                <span>Bank Transfer</span>
+                            </div>
+                        </label>
+                        
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="vodafone">
+                            <div class="payment-method-card">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Vodafone Cash</span>
+                            </div>
+                        </label>
+                        
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="cash">
+                            <div class="payment-method-card">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Cash</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="payment-details" id="payment-details">
+                    <!-- Payment method specific details will be inserted here -->
+                </div>
+                
+                <div class="checkout-actions">
+                    <button id="complete-purchase" class="complete-purchase-btn">Complete Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include common elements -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Products</h3>
+                    <ul>
+                        <li><a href="#certification">Certification</a></li>
+                        <li><a href="#toolkit">AI Toolkit</a></li>
+                        <li><a href="#mentoring">Mentoring</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

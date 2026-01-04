@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Lessons - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/lessons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html" class="active">AI Lessons</a></li>
+                <li><a href="library.html">Book Library</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="lessons-hero">
+        <div class="container">
+            <h1>AI Learning Paths</h1>
+            <p>Master artificial intelligence with our comprehensive course collection</p>
+        </div>
+    </section>
+
+    <!-- Course Categories -->
+    <section class="course-categories">
+        <div class="container">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="course-search" placeholder="Search courses..." class="course-search-input">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">All Courses</button>
+                <button class="filter-btn" data-category="beginner">Beginner</button>
+                <button class="filter-btn" data-category="intermediate">Intermediate</button>
+                <button class="filter-btn" data-category="advanced">Advanced</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Grid -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="courses-grid">
+                <!-- Machine Learning Course -->
+                <div class="course-card" data-category="beginner" data-course="ml">
+                    <div class="course-image">
+                        <img src="images/ml-course.jpg" alt="Machine Learning" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5NTDwvdGV4dD48L3N2Zz4='">
+                        <div class="course-level">Beginner</div>
+                    </div>
+                    <div class="course-info">
+                        <h3>Machine Learning Fundamentals</h3>
+                        <p>Learn the core concepts of machine learning, including supervised and unsupervised learning algorithms.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 8 weeks</span>
+                            <span><i class="fas fa-users"></i> 1,234 students</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <div class="course-price">$99</div>
+                        <div class="course-actions">
+                            <button class="view-course-btn" onclick="window.location.href='lesson-ml.html'">View Course</button>
+                            <button class="add-to-cart" data-item="Machine Learning Course" data-price="99">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Learning Course -->
+                <div class="course-card" data-category="intermediate" data-course="dl">
+                    <div class="course-image">
+                        <img src="images/dl-course.jpg" alt="Deep Learning" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNzY0YmEyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ETDwvdGV4dD48L3N2Zz4='">
+                        <div class="course-level">Intermediate</div>
+                    </div>
+                    <div class="course-info">
+                        <h3>Deep Learning Mastery</h3>
+                        <p>Master neural networks, CNNs, RNNs, and advanced deep learning architectures.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 12 weeks</span>
+                            <span><i class="fas fa-users"></i> 856 students</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="course-price">$149</div>
+                        <div class="course-actions">
+                            <button class="view-course-btn" onclick="window.location.href='lesson-dl.html'">View Course</button>
+                            <button class="add-to-cart" data-item="Deep Learning Course" data-price="149">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NLP Course -->
+                <div class="course-card" data-category="intermediate" data-course="nlp">
+                    <div class="course-image">
+                        <img src="images/nlp-course.jpg" alt="NLP" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZENzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5MUDwvdGV4dD48L3N2Zz4='">
+                        <div class="course-level">Intermediate</div>
+                    </div>
+                    <div class="course-info">
+                        <h3>Natural Language Processing</h3>
+                        <p>Build AI systems that understand and generate human language using modern NLP techniques.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 10 weeks</span>
+                            <span><i class="fas fa-users"></i> 642 students</span>
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                        <div class="course-price">$129</div>
+                        <div class="course-actions">
+                            <button class="view-course-btn" onclick="window.location.href='lesson-nlp.html'">View Course</button>
+                            <button class="add-to-cart" data-item="NLP Course" data-price="129">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Computer Vision Course -->
+                <div class="course-card" data-category="advanced" data-course="cv">
+                    <div class="course-image">
+                        <img src="images/cv-course.jpg" alt="Computer Vision" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTc0YzNjIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DVjwvdGV4dD48L3N2Zz4='">
+                        <div class="course-level">Advanced</div>
+                    </div>
+                    <div class="course-info">
+                        <h3>Computer Vision</h3>
+                        <p>Master image recognition, object detection, and visual AI applications.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 14 weeks</span>
+                            <span><i class="fas fa-users"></i> 423 students</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <div class="course-price">$179</div>
+                        <div class="course-actions">
+                            <button class="view-course-btn" onclick="window.location.href='lesson-cv.html'">View Course</button>
+                            <button class="add-to-cart" data-item="Computer Vision Course" data-price="179">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Ethics Course -->
+                <div class="course-card" data-category="beginner" data-course="ethics">
+                    <div class="course-image">
+                        <img src="images/ethics-course.jpg" alt="AI Ethics" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDBiODk0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5FVEhJQ1M8L3RleHQ+PC9zdmc+'">
+                        <div class="course-level">Beginner</div>
+                    </div>
+                    <div class="course-info">
+                        <h3>AI Ethics and Bias</h3>
+                        <p>Understand ethical implications, bias detection, and responsible AI development.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 6 weeks</span>
+                            <span><i class="fas fa-users"></i> 789 students</span>
+                            <span><i class="fas fa-star"></i> 4.6</span>
+                        </div>
+                        <div class="course-price">$79</div>
+                        <div class="course-actions">
+                            <button class="view-course-btn" onclick="window.location.href='lesson-ethics.html'">View Course</button>
+                            <button class="add-to-cart" data-item="AI Ethics Course" data-price="79">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reinforcement Learning Course -->
+                <div class="course-card" data-category="advanced" data-course="rl">
+                    <div class="course-image">
+                        <img src="images/rl-course.jpg" alt="Reinforcement Learning" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjM5YzEyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5STDwvdGV4dD48L3N2Zz4='">
+                        <div class="course-level">Advanced</div>
+                    </div>
+                    <div class="course-info">
+                        <h3>Reinforcement Learning</h3>
+                        <p>Train intelligent agents to make decisions through trial and error learning.</p>
+                        <div class="course-meta">
+                            <span><i class="fas fa-clock"></i> 16 weeks</span>
+                            <span><i class="fas fa-users"></i> 312 students</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="course-price">$199</div>
+                        <div class="course-actions">
+                            <button class="view-course-btn" onclick="window.location.href='lesson-rl.html'">View Course</button>
+                            <button class="add-to-cart" data-item="Reinforcement Learning Course" data-price="199">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Path Section -->
+    <section class="learning-paths">
+        <div class="container">
+            <h2>Recommended Learning Paths</h2>
+            <div class="paths-grid">
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>AI Beginner Path</h3>
+                    <div class="path-courses">
+                        <div class="path-step">1. AI Ethics and Bias</div>
+                        <div class="path-step">2. Machine Learning Fundamentals</div>
+                        <div class="path-step">3. Choose Specialization</div>
+                    </div>
+                    <div class="path-price">Total: $178 <span class="original-price">$208</span></div>
+                    <button class="path-btn">Start Path</button>
+                </div>
+                
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>AI Professional Path</h3>
+                    <div class="path-courses">
+                        <div class="path-step">1. Machine Learning Fundamentals</div>
+                        <div class="path-step">2. Deep Learning Mastery</div>
+                        <div class="path-step">3. NLP or Computer Vision</div>
+                    </div>
+                    <div class="path-price">Total: $377 <span class="original-price">$457</span></div>
+                    <button class="path-btn">Start Path</button>
+                </div>
+                
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>AI Expert Path</h3>
+                    <div class="path-courses">
+                        <div class="path-step">1. All Core Courses</div>
+                        <div class="path-step">2. Advanced Specializations</div>
+                        <div class="path-step">3. Capstone Project</div>
+                    </div>
+                    <div class="path-price">Total: $699 <span class="original-price">$855</span></div>
+                    <button class="path-btn">Start Path</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include common modals and footer -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="lesson-ml.html">Machine Learning</a></li>
+                        <li><a href="lesson-dl.html">Deep Learning</a></li>
+                        <li><a href="lesson-nlp.html">NLP</a></li>
+                        <li><a href="lesson-cv.html">Computer Vision</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                    <div class="social-media-section">
+                        <h3>Follow Us</h3>
+                        <p>Stay connected with TARG STAR</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook" title="Follow us on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="#" class="social-link telegram" title="Join our Telegram">
+                                <i class="fab fa-telegram-plane"></i>
+                                <span>Telegram</span>
+                            </a>
+                            <a href="#" class="social-link instagram" title="Follow us on Instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#" class="social-link twitter" title="Follow us on Twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="#" class="social-link linkedin" title="Connect on LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="#" class="social-link youtube" title="Subscribe to our YouTube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/lessons.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TARG STAR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-star">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <polygon points="20,2 24,14 38,14 28,22 32,34 20,26 8,34 12,22 2,14 16,14" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+                    </svg>
+                </div>
+                <span class="logo-text">TARG STAR</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lessons.html">AI Lessons</a></li>
+                <li><a href="library.html">Book Library</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-auth">
+                <button id="sign-in-btn" class="auth-btn">Sign In</button>
+                <div class="signup-dropdown">
+                    <button id="sign-up-btn" class="auth-btn dropdown-toggle" onclick="window.toggleDropdown()">Sign Up</button>
+                    <div class="dropdown-menu" id="signup-dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="dropdown-title">Menu</span>
+                            <button class="dropdown-close" onclick="window.authManager?.closeDropdown()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button class="dropdown-item signup-modal-btn" onclick="window.authManager?.openModal('signup')">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="dropdown-item profile-btn" style="display: none;" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button id="logout-btn" class="dropdown-item logout-btn" style="display: none;" onclick="window.authManager?.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div class="dropdown-divider" id="logout-divider" style="display: none;"></div>
+                        <button class="dropdown-item" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="dropdown-item" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-box"></i>
+                            <span>Orders</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>📊 My Dashboard</h1>
+                <p id="welcome-message">Welcome back! Here's your learning progress and activity.</p>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">🎓</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="courses-completed">0</div>
+                        <div class="stat-label">Courses Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="study-hours">0</div>
+                        <div class="stat-label">Study Hours</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="achievements">0</div>
+                        <div class="stat-label">Achievements</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="streak-days">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Profile Card -->
+                <div class="dashboard-card profile-card">
+                    <div class="card-header">
+                        <h3>👤 Profile Overview</h3>
+                        <button class="edit-profile-btn">Edit</button>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-avatar">
+                            <img id="user-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRDcwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMzAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+VTwvdGV4dD48L3N2Zz4=" alt="User Avatar">
+                            <div class="avatar-upload">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <h4 id="profile-name">Loading...</h4>
+                            <p id="profile-email">Loading...</p>
+                            <div id="permission-status" style="margin: 8px 0;">
+                                <span style="color: #6c757d;">
+                                    <i class="fas fa-clock"></i> Checking permissions...
+                                </span>
+                            </div>
+                            <div class="profile-badges">
+                                <span class="badge">🌟 Premium Member</span>
+                                <span class="badge">🎯 Goal Achiever</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-progress">
+                        <div class="progress-item">
+                            <span>Profile Completion</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="profile-completion" style="width: 75%"></div>
+                            </div>
+                            <span class="progress-percent">75%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card activity-card">
+                    <div class="card-header">
+                        <h3>📈 Recent Activity</h3>
+                        <select id="activity-filter">
+                            <option value="all">All Activity</option>
+                            <option value="courses">Courses</option>
+                            <option value="purchases">Purchases</option>
+                            <option value="achievements">Achievements</option>
+                        </select>
+                    </div>
+                    <div class="activity-list" id="activity-list">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Learning Progress -->
+                <div class="dashboard-card progress-card">
+                    <div class="card-header">
+                        <h3>📚 Learning Progress</h3>
+                        <button class="view-all-btn">View All</button>
+                    </div>
+                    <div class="progress-content">
+                        <canvas id="progressChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="course-list" id="current-courses">
+                        <!-- Current courses will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Orders & Purchases -->
+                <div class="dashboard-card orders-card">
+                    <div class="card-header">
+                        <h3>🛒 Recent Orders</h3>
+                        <a href="orders.html" class="view-all-btn">View All</a>
+                    </div>
+                    <div class="orders-list" id="recent-orders">
+                        <!-- Recent orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Analytics Chart -->
+                <div class="dashboard-card analytics-card">
+                    <div class="card-header">
+                        <h3>📊 Learning Analytics</h3>
+                        <div class="chart-controls">
+                            <button class="chart-btn active" data-period="week">Week</button>
+                            <button class="chart-btn" data-period="month">Month</button>
+                            <button class="chart-btn" data-period="year">Year</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="analyticsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-card actions-card">
+                    <div class="card-header">
+                        <h3>⚡ Quick Actions</h3>
+                    </div>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="window.location.href='lessons.html'">
+                            <i class="fas fa-book"></i>
+                            <span>Browse Courses</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='cart.html'">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>View Cart</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-receipt"></i>
+                            <span>Order History</span>
+                        </button>
+                        <button class="action-btn" onclick="openProfileSettings()">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <button class="action-btn" onclick="downloadCertificate()">
+                            <i class="fas fa-certificate"></i>
+                            <span>Certificates</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='contact.html'">
+                            <i class="fas fa-headset"></i>
+                            <span>Support</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Learning Notes -->
+                <div class="dashboard-card notes-card">
+                    <div class="card-header">
+                        <h3>📝 Learning Notes</h3>
+                        <div class="notes-controls">
+                            <button id="new-note-btn" class="notes-btn">
+                                <i class="fas fa-plus"></i> New Note
+                            </button>
+                            <button id="save-notes-btn" class="notes-btn save">
+                                <i class="fas fa-save"></i> Save
+                            </button>
+                            <button id="view-all-notes-btn" class="notes-btn">
+                                <i class="fas fa-folder-open"></i> All Notes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="notes-content">
+                        <div class="notes-editor">
+                            <div class="editor-toolbar">
+                                <button class="toolbar-btn" data-command="bold" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button class="toolbar-btn" data-command="italic" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button class="toolbar-btn" data-command="underline" title="Underline">
+                                    <i class="fas fa-underline"></i>
+                                </button>
+                                <div class="toolbar-separator"></div>
+                                <button class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                                <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                                <div class="toolbar-separator"></div>
+                                <button class="toolbar-btn" id="insert-timestamp" title="Insert Timestamp">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="toolbar-btn" id="insert-highlight" title="Highlight">
+                                    <i class="fas fa-highlighter"></i>
+                                </button>
+                            </div>
+                            <div class="editor-container">
+                                <div id="notes-editor" contenteditable="true" class="notes-textarea" placeholder="Start taking notes during your learning session...">
+                                </div>
+                                <div class="editor-status">
+                                    <span id="auto-save-status">Auto-saved</span>
+                                    <span id="word-count">0 words</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notes-sidebar">
+                            <div class="current-session-info">
+                                <h4>Current Session</h4>
+                                <div class="session-details">
+                                    <div class="session-topic" id="current-topic">Machine Learning Basics</div>
+                                    <div class="session-time" id="current-session-time">Started at 2:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="quick-notes">
+                                <h4>Quick Notes</h4>
+                                <div class="quick-note-item" onclick="insertQuickNote('Key Point')">
+                                    <i class="fas fa-key"></i> Key Point
+                                </div>
+                                <div class="quick-note-item" onclick="insertQuickNote('Question')">
+                                    <i class="fas fa-question-circle"></i> Question
+                                </div>
+                                <div class="quick-note-item" onclick="insertQuickNote('Important')">
+                                    <i class="fas fa-exclamation-triangle"></i> Important
+                                </div>
+                                <div class="quick-note-item" onclick="insertQuickNote('To Review')">
+                                    <i class="fas fa-bookmark"></i> To Review
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Learning Session -->
+                <div class="dashboard-card live-session-card">
+                    <div class="card-header">
+                        <h3>📹 Live Learning Session</h3>
+                        <div class="session-controls">
+                            <button id="start-session-btn" class="session-btn start">
+                                <i class="fas fa-video"></i> Start Session
+                            </button>
+                            <button id="end-session-btn" class="session-btn end" style="display: none;">
+                                <i class="fas fa-video-slash"></i> End Session
+                            </button>
+                        </div>
+                    </div>
+                    <div class="live-session-content">
+                        <div class="video-container">
+                            <div class="video-grid">
+                                <div class="video-panel instructor-video">
+                                    <video id="instructor-video" autoplay muted></video>
+                                    <div class="video-overlay">
+                                        <div class="video-label">Instructor</div>
+                                        <div class="video-controls">
+                                            <button class="video-control-btn" id="toggle-instructor-audio">
+                                                <i class="fas fa-microphone"></i>
+                                            </button>
+                                            <button class="video-control-btn" id="toggle-instructor-video">
+                                                <i class="fas fa-video"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="video-panel learner-video">
+                                    <video id="learner-video" autoplay muted></video>
+                                    <div class="video-overlay">
+                                        <div class="video-label">You</div>
+                                        <div class="video-controls">
+                                            <button class="video-control-btn" id="toggle-learner-audio">
+                                                <i class="fas fa-microphone-slash"></i>
+                                            </button>
+                                            <button class="video-control-btn" id="toggle-learner-video">
+                                                <i class="fas fa-video"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="session-info" id="session-info" style="display: none;">
+                                <div class="session-status">
+                                    <span class="status-indicator live"></span>
+                                    <span>Live Session Active</span>
+                                    <span class="session-duration" id="session-duration">00:00</span>
+                                </div>
+                                <div class="session-participants">
+                                    <i class="fas fa-users"></i>
+                                    <span id="participant-count">2 participants</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Notes Library -->
+                <div class="dashboard-card notes-library-card">
+                    <div class="card-header">
+                        <h3>📚 Notes Library</h3>
+                        <div class="library-controls">
+                            <input type="text" id="notes-search" placeholder="Search notes..." class="search-input">
+                            <select id="notes-filter" class="filter-select">
+                                <option value="all">All Notes</option>
+                                <option value="recent">Recent</option>
+                                <option value="favorites">Favorites</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="notes-library-content">
+                        <div class="notes-grid" id="notes-grid">
+                            <!-- Notes will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Settings Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content profile-modal-content">
+            <span class="close">&times;</span>
+            <h2>⚙️ Profile Settings</h2>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="display-name">Display Name</label>
+                    <input type="text" id="display-name" placeholder="Your display name">
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" placeholder="Tell us about yourself" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="Your location">
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" placeholder="https://yourwebsite.com">
+                </div>
+                <div class="form-group">
+                    <label>Preferences</label>
+                    <div class="preferences-grid">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="email-notifications">
+                            <span>Email Notifications</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="course-reminders">
+                            <span>Course Reminders</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="marketing-emails">
+                            <span>Marketing Emails</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="sign-in-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="signin-form">
+                    <input type="email" id="signin-email" placeholder="Email" required>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+            </div>
+            <div id="sign-up-form" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-star">
+                            <svg width="30" height="30" viewBox="0 0 30 30">
+                                <polygon points="15,2 18,10 28,10 21,16 24,26 15,20 6,26 9,16 2,10 12,10" fill="#FFD700"/>
+                            </svg>
+                        </div>
+                        <span>TARG STAR</span>
+                    </div>
+                    <p>Empowering the next generation of AI professionals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="lessons.html">AI Lessons</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Order Support</a></li>
+                        <li><a href="contact.html">Returns</a></li>
+                        <li><a href="contact.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@targstar.com</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TARG STAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Immediate authentication check before page loads
+        (function() {
+            console.log('🔐 Pre-loading authentication check...');
+            
+            // Check for user session
+            const storedUser = localStorage.getItem('targstar_user');
+            let isAuthenticated = false;
+            
+            if (storedUser) {
+                try {
+                    const userData = JSON.parse(storedUser);
+                    if (userData && userData.email) {
+                        isAuthenticated = true;
+                        console.log('✅ User session found:', userData.email);
+                    }
+                } catch (error) {
+                    console.log('❌ Invalid user session');
+                }
+            }
+            
+            // If not authenticated, hide content and show access denied
+            if (!isAuthenticated) {
+                console.log('❌ No authentication - blocking page load');
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.body.style.display = 'none';
+                });
+            } else {
+                console.log('✅ Authentication verified - allowing page load');
+            }
+        })();
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
