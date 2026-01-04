@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Notifications Test - TARG STAR</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(45deg, #FFA500, #FF8C00);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn.secondary:hover {
+            background: #5a6268;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .status.info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+        
+        .code {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid #e9ecef;
+            margin: 10px 0;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .setting-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .setting-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .setting-value {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Firebase Notifications Test</h1>
+        
+        <div class="test-section">
+            <h3>📊 Notification Status</h3>
+            <div id="notification-status">
+                <div class="status info">Loading notification status...</div>
+            </div>
+            <button class="btn" onclick="checkNotificationStatus()">Refresh Status</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔑 Permission Management</h3>
+            <p>Request notification permissions and manage settings.</p>
+            <button class="btn" onclick="requestPermission()">Request Permission</button>
+            <button class="btn secondary" onclick="checkPermission()">Check Permission</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test Notifications</h3>
+            <p>Send test notifications to verify the system is working.</p>
+            <button class="btn" onclick="sendTestNotification()">Send Test Notification</button>
+            <button class="btn" onclick="sendCourseNotification()">Course Update</button>
+            <button class="btn" onclick="sendOrderNotification()">Order Update</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📢 Topic Subscriptions</h3>
+            <p>Subscribe to different notification topics.</p>
+            <button class="btn" onclick="subscribeToTopic('course-updates')">Course Updates</button>
+            <button class="btn" onclick="subscribeToTopic('order-updates')">Order Updates</button>
+            <button class="btn" onclick="subscribeToTopic('announcements')">Announcements</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>⚙️ Current Settings</h3>
+            <div id="settings-display">
+                <div class="status info">Loading settings...</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Debug Information</h3>
+            <div id="debug-info">
+                <div class="status info">Loading debug information...</div>
+            </div>
+            <button class="btn secondary" onclick="showDebugInfo()">Refresh Debug Info</button>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-notifications.js"></script>
+
+    <script>
+        // Wait for everything to load
+        setTimeout(() => {
+            checkNotificationStatus();
+            showSettings();
+            showDebugInfo();
+        }, 2000);
+
+        function checkNotificationStatus() {
+            const statusDiv = document.getElementById('notification-status');
+            
+            if (!window.notificationManager) {
+                statusDiv.innerHTML = '<div class="status error">❌ Notification manager not available</div>';
+                return;
+            }
+            
+            const settings = window.notificationManager.getSettings();
+            
+            let statusHTML = '';
+            
+            if (!settings.isSupported) {
+                statusHTML = '<div class="status error">❌ Notifications not supported in this browser</div>';
+            } else {
+                switch (settings.permission) {
+                    case 'granted':
+                        statusHTML = '<div class="status success">✅ Notifications enabled and working</div>';
+                        break;
+                    case 'denied':
+                        statusHTML = '<div class="status error">❌ Notifications blocked - enable in browser settings</div>';
+                        break;
+                    case 'default':
+                        statusHTML = '<div class="status warning">⚠️ Notification permission not requested yet</div>';
+                        break;
+                }
+                
+                if (settings.hasToken) {
+                    statusHTML += '<div class="status success">🎫 FCM token available</div>';
+                } else {
+                    statusHTML += '<div class="status warning">⚠️ No FCM token available</div>';
+                }
+            }
+            
+            statusDiv.innerHTML = statusHTML;
+        }
+
+        async function requestPermission() {
+            if (!window.requestNotificationPermission) {
+                alert('Notification system not available');
+                return;
+            }
+            
+            const granted = await window.requestNotificationPermission();
+            
+            if (granted) {
+                alert('✅ Notification permission granted!');
+            } else {
+                alert('❌ Notification permission denied');
+            }
+            
+            checkNotificationStatus();
+        }
+
+        function checkPermission() {
+            const permission = Notification.permission;
+            alert(`Current permission: ${permission}`);
+        }
+
+        function sendTestNotification() {
+            if (!window.sendTestNotification) {
+                alert('Test notification function not available');
+                return;
+            }
+            
+            window.sendTestNotification();
+        }
+
+        function sendCourseNotification() {
+            if (!window.notificationManager) {
+                alert('Notification manager not available');
+                return;
+            }
+            
+            const payload = {
+                notification: {
+                    title: 'New Course Available!',
+                    body: 'Advanced Machine Learning course is now available. Start learning today!'
+                },
+                data: {
+                    type: 'course_update',
+                    courseId: 'ml',
+                    timestamp: new Date().toISOString()
+                }
+            };
+            
+            window.notificationManager.showNotification(payload);
+        }
+
+        function sendOrderNotification() {
+            if (!window.notificationManager) {
+                alert('Notification manager not available');
+                return;
+            }
+            
+            const payload = {
+                notification: {
+                    title: 'Order Update',
+                    body: 'Your order #12345 has been processed and is ready for download!'
+                },
+                data: {
+                    type: 'order_update',
+                    orderId: '12345',
+                    timestamp: new Date().toISOString()
+                }
+            };
+            
+            window.notificationManager.showNotification(payload);
+        }
+
+        async function subscribeToTopic(topic) {
+            if (!window.notificationManager) {
+                alert('Notification manager not available');
+                return;
+            }
+            
+            const success = await window.notificationManager.subscribeToTopic(topic);
+            
+            if (success) {
+                alert(`✅ Subscribed to ${topic}`);
+            } else {
+                alert(`❌ Failed to subscribe to ${topic}`);
+            }
+        }
+
+        function showSettings() {
+            const settingsDiv = document.getElementById('settings-display');
+            
+            if (!window.getNotificationSettings) {
+                settingsDiv.innerHTML = '<div class="status error">Settings not available</div>';
+                return;
+            }
+            
+            const settings = window.getNotificationSettings();
+            
+            settingsDiv.innerHTML = `
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-label">Browser Support</div>
+                        <div class="setting-value">${settings.isSupported ? '✅ Yes' : '❌ No'}</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">Permission Status</div>
+                        <div class="setting-value">${settings.permission}</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">FCM Token</div>
+                        <div class="setting-value">${settings.hasToken ? '✅ Available' : '❌ Not available'}</div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">Online Status</div>
+                        <div class="setting-value">${navigator.onLine ? '🌐 Online' : '📴 Offline'}</div>
+                    </div>
+                </div>
+            `;
+            
+            if (settings.token) {
+                settingsDiv.innerHTML += `
+                    <div class="code">
+                        <strong>FCM Token:</strong><br>
+                        ${settings.token.substring(0, 50)}...
+                    </div>
+                `;
+            }
+        }
+
+        function showDebugInfo() {
+            const debugDiv = document.getElementById('debug-info');
+            
+            const debugInfo = {
+                'User Agent': navigator.userAgent,
+                'Firebase Available': typeof firebase !== 'undefined',
+                'Messaging Available': typeof firebase !== 'undefined' && firebase.messaging,
+                'Service Worker Support': 'serviceWorker' in navigator,
+                'Notification Support': 'Notification' in window,
+                'Push Support': 'PushManager' in window,
+                'Current URL': window.location.href,
+                'Timestamp': new Date().toISOString()
+            };
+            
+            let debugHTML = '<div class="settings-grid">';
+            
+            for (const [key, value] of Object.entries(debugInfo)) {
+                debugHTML += `
+                    <div class="setting-item">
+                        <div class="setting-label">${key}</div>
+                        <div class="setting-value">${value}</div>
+                    </div>
+                `;
+            }
+            
+            debugHTML += '</div>';
+            
+            debugDiv.innerHTML = debugHTML;
+        }
+    </script>
+</body>
+</html>

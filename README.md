@@ -1,6 +1,34 @@
-# TARG STAR - Advanced AI Education Website
+# TARG STAR - Advanced AI Education Platform
 
-A comprehensive, multi-page website for advanced AI education with modern design, interactive features, and full Firebase integration.
+A comprehensive, multi-page AI education website with advanced dashboard, learning analytics, live sessions, and full Firebase integration.
+
+## 🌟 Latest Features
+
+### 📊 **Advanced Learning Analytics Dashboard**
+- **Interactive Charts**: Real-time study hours and course completion tracking
+- **Period Analysis**: Weekly, monthly, and yearly progress views
+- **Smart Insights**: AI-powered learning recommendations and trend analysis
+- **Export Functionality**: Download analytics data for external analysis
+- **Visual Progress**: Beautiful Chart.js visualizations with TARG STAR branding
+
+### 🎥 **Live Learning Sessions**
+- **Dual Video Layout**: Real-time instructor and learner video streams
+- **Session Management**: Start/stop sessions with automatic timer tracking
+- **Interactive Controls**: Individual audio/video controls for both participants
+- **Session Analytics**: Duration tracking and participant monitoring
+
+### 📝 **Smart Notes System**
+- **Real-time Editor**: Rich text editor with formatting tools and auto-save
+- **Session Integration**: Notes automatically linked to live learning sessions
+- **Quick Templates**: Pre-built note templates for key points, questions, and important items
+- **Notes Library**: Searchable and filterable notes collection with favorites
+- **Export Options**: Download notes in various formats
+
+### 🏆 **Achievement & Activity Tracking**
+- **Real-time Activities**: Live tracking of all learning activities
+- **Interactive Timeline**: Visual activity feed with detailed insights
+- **Achievement System**: Unlock badges and milestones based on progress
+- **Trend Analysis**: Visual indicators for learning progress trends
 
 ## 🌟 Features
 
@@ -14,11 +42,16 @@ A comprehensive, multi-page website for advanced AI education with modern design
 
 ### Pages Included
 1. **Homepage** (`index.html`) - Hero section, features, popular courses
-2. **Lessons** (`lessons.html`) - Course catalog with filtering and learning paths
-3. **Products** (`products.html`) - Services and products with payment integration
-4. **Contact** (`contact.html`) - Beautiful contact form with FAQ section
-5. **Cart** (`cart.html`) - Shopping cart with checkout process
-6. **Sample Lesson** (`lesson-ml.html`) - Detailed course page example
+2. **Dashboard** (`dashboard.html`) - **NEW!** Advanced learning analytics and live sessions
+3. **Lessons** (`lessons.html`) - Course catalog with filtering and learning paths
+4. **Library** (`library.html`) - **NEW!** Comprehensive book library with purchase system
+5. **Products** (`products.html`) - Services and products with payment integration
+6. **Contact** (`contact.html`) - Beautiful contact form with FAQ section
+7. **Cart** (`cart.html`) - Shopping cart with checkout process
+8. **Profile** (`profile.html`) - **NEW!** User profile management and preferences
+9. **Settings** (`settings.html`) - **NEW!** Account settings and preferences
+10. **Orders** (`orders.html`) - **NEW!** Order history and tracking
+11. **Sample Lessons** (`lesson-*.html`) - Detailed course pages (ML, DL, NLP, CV)
 
 ### Payment Integration
 - **PayPal** - Secure online payments
@@ -263,5 +296,6 @@ Target performance goals:
 
 **TARG STAR** - Empowering the next generation of AI professionals through comprehensive education and hands-on experience.
 
-Built with ❤️ for the AI learning community.#   T A R G   S T A R   -   A I   E d u c a t i o n   P l a t f o r m  
+Built with ❤️ for the AI learning community.#   T A R G   S T A R   -   A I   E d u c a t i o n   P l a t f o r m 
+ 
  
